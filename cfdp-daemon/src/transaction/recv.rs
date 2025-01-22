@@ -135,7 +135,7 @@ impl<T: FileStore> RecvTransaction<T> {
         );
 
         let mut transaction = Self {
-            status: TransactionStatus::Undefined,
+            status: TransactionStatus::Active,
             config,
             filestore,
             indication_tx,
