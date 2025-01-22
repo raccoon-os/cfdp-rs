@@ -327,7 +327,7 @@ impl FileStore for NativeFileStore {
     fn list_directory<P: AsRef<Utf8Path>>(&self, path: P) -> FileStoreResult<String> {
         let directory = self.get_native_path(path);
         let mut directory_listing =
-            format!("type,path,size,timestamp\n",);
+            format!("isDirectory,name,size,modified\n",);
         let (mut dirs, mut files): (Vec<_>, Vec<_>) = fs::read_dir(&directory)?
             .filter_map(|entry| entry.ok())
             .partition(|entry| entry.path().is_dir());
