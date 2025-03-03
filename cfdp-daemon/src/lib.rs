@@ -431,6 +431,16 @@ impl<T: FileStore + Send + Sync + 'static> Daemon<T> {
     }
 
     async fn forward_pdu(&mut self, pdu: PDU) -> DaemonResult<()> {
+        if pdu.header.direction == Direction::ToReceiver
+            && pdu.header.destination_entity_id != self.entity_id
+        {
+            info!(
+                "Discarding PDU for entity {}",
+                pdu.header.destination_entity_id
+            );
+            return Ok(());
+        }
+
         // find the entity this entity will be sending too.
         // If this PDU is to the sender, we send to the destination
         // if this PDU is to the receiver, we send to the source
